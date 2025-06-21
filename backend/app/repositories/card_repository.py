@@ -1,4 +1,3 @@
-# app/repositories/cartao_repository.py
 from app.database import get_db_connection
 
 def get_by_baralho_id(baralho_id):
