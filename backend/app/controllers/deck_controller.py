@@ -21,6 +21,25 @@ def create_baralho():
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     
+@baralho_bp.route('/baralhos/<string:baralho_id>', methods=['PATCH'])
+@token_required
+def update_baralho(baralho_id):
+    usuario_id = g.user_id
+    data = request.get_json()
+
+    try:
+        success = deck_service.update_baralho(baralho_id, usuario_id, data)
+        if success:
+            return jsonify({'message': 'Baralho atualizado com sucesso.'}), 200
+        else:
+            return jsonify({'message': 'Nenhuma alteração realizada.'}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 404
+    except PermissionError as e:
+        return jsonify({'error': str(e)}), 403
+    except Exception as e:
+        return jsonify({'error': 'Erro interno do servidor'}), 500
+    
 @baralho_bp.route('/baralhos/<string:deck_id>', methods=['DELETE'])
 @token_required
 def delete_cartao(deck_id):
