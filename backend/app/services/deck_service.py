@@ -1,4 +1,3 @@
-# app/services/baralho_service.py
 from app.repositories import deck_repository
 import uuid
 

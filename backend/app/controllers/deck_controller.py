@@ -1,4 +1,3 @@
-# app/controllers/baralho_controller.py
 from flask import Blueprint, request, jsonify, g
 from app.services import deck_service
 from app.utils.decorators import token_required
@@ -21,7 +20,7 @@ def create_baralho():
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     
-@baralho_bp.route('/baralhos/<string:baralho_id>', methods=['PATCH'])
+@baralho_bp.route('/baralhos/<string:baralho_id>', methods=['PUT'])
 @token_required
 def update_baralho(baralho_id):
     usuario_id = g.user_id

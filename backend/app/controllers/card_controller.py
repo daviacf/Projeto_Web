@@ -18,6 +18,18 @@ def create_cartao(baralho_id):
         return jsonify(novo_cartao), 201
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
+    
+@cartao_bp.route('/cartoes/<string:cartao_id>', methods=['PUT'])
+@token_required
+def update_cartao(cartao_id):
+    data = request.get_json()
+    try:
+        updated_cartao = card_service.update_card(cartao_id, data)
+        return jsonify(updated_cartao)
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': 'Erro interno do servidor'}), 500
 
 @cartao_bp.route('/cartoes/<string:cartao_id>', methods=['DELETE'])
 @token_required
