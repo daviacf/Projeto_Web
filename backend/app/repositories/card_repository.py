@@ -3,7 +3,7 @@ from app.database import get_db_connection
 def get_by_baralho_id(baralho_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Cartoes WHERE baralho_id = %s", (baralho_id,))
+    cursor.execute("SELECT * FROM cartoes WHERE baralho_id = %s", (baralho_id,))
     cartoes = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -13,7 +13,7 @@ def create(cartao_id, frente, verso, baralho_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO Cartoes (id, frente, verso, baralho_id) VALUES (%s, %s, %s, %s)",
+        "INSERT INTO cartoes (id, frente, verso, baralho_id) VALUES (%s, %s, %s, %s)",
         (cartao_id, frente, verso, baralho_id)
     )
     conn.commit()
@@ -45,7 +45,7 @@ def update(cartao_id, frente=None, verso=None):
             
         params.append(cartao_id)
         
-        query = f"UPDATE Cartoes SET {', '.join(query_parts)} WHERE id = %s"
+        query = f"UPDATE cartoes SET {', '.join(query_parts)} WHERE id = %s"
         
         cursor.execute(query, tuple(params))
         conn.commit()
@@ -63,7 +63,7 @@ def find_by_id(cartao_id):
     conn = get_db_connection()
     if conn:
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM Cartoes WHERE id = %s", (cartao_id,))
+        cursor.execute("SELECT * FROM cartoes WHERE id = %s", (cartao_id,))
         cartao = cursor.fetchone()
         cursor.close()
         conn.close()
@@ -73,7 +73,7 @@ def find_by_id(cartao_id):
 def delete_by_id(cartao_id):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM Cartoes WHERE id = %s", (cartao_id,))
+    cursor.execute("DELETE FROM cartoes WHERE id = %s", (cartao_id,))
     conn.commit()
     rows_affected = cursor.rowcount
     cursor.close()
