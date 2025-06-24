@@ -39,11 +39,16 @@ def update_baralho(baralho_id):
     except Exception as e:
         return jsonify({'error': 'Erro interno do servidor'}), 500
     
+# app/controllers/deck_controller.py
+
 @baralho_bp.route('/baralhos/<string:deck_id>', methods=['DELETE'])
 @token_required
-def delete_cartao(deck_id):
+def delete_baralho(deck_id): # <-- Nome da função corrigido para clareza
+    usuario_id = g.user_id # Pega o ID do usuário logado a partir do token
     try:
-        deck_service.remove_deck(deck_id)
+        deck_service.remove_deck(deck_id, usuario_id) # Passa o ID do usuário para a verificação
         return jsonify({'message': 'Baralho deletado com sucesso'}), 200
     except ValueError as e:
         return jsonify({'error': str(e)}), 404
+    except PermissionError as e: # Adicionamos um tratamento para o novo erro de permissão
+        return jsonify({'error': str(e)}), 403 # 403 Forbidden é o status correto para acesso negado

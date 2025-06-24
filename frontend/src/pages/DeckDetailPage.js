@@ -1,11 +1,17 @@
-// src/pages/DeckDetailPage.js
+
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getCardsByDeckId, createCard, updateCard, deleteCard } from '../api/cardService';
+import { FiEdit, FiTrash2, FiPlusCircle, FiArrowLeft } from 'react-icons/fi';
 import './DeckDetailPage.css';
+
+// Componente para o esqueleto de carregamento
+const CardSkeleton = () => <div className="card-skeleton" />;
 
 const DeckDetailPage = () => {
     const [cards, setCards] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const { deckId } = useParams();
 
@@ -19,19 +25,19 @@ const DeckDetailPage = () => {
     const [editingFront, setEditingFront] = useState('');
     const [editingBack, setEditingBack] = useState('');
 
-    // Busca os cartões
     const fetchCards = async () => {
         if (deckId) {
+            setIsLoading(true);
             try {
                 const response = await getCardsByDeckId(deckId);
                 setCards(response.data);
             } catch (err) { setError('Não foi possível carregar os cartões.'); }
+            finally { setIsLoading(false); }
         }
     };
 
     useEffect(() => { fetchCards(); }, [deckId]);
 
-    // Lógica de Criação
     const handleCreateCard = async (e) => {
         e.preventDefault();
         if (!deckId) return;
@@ -42,7 +48,6 @@ const DeckDetailPage = () => {
         } catch (err) { setError('Erro ao criar o cartão.'); }
     };
 
-    // Lógica de Exclusão
     const handleDeleteCard = async (cardId) => {
         if (window.confirm('Tem certeza de que deseja excluir este cartão?')) {
             try {
@@ -52,7 +57,6 @@ const DeckDetailPage = () => {
         }
     };
 
-    // Lógica do Modal de Edição
     const handleOpenEditModal = (card) => {
         setEditingCard(card);
         setEditingFront(card.frente);
@@ -60,9 +64,7 @@ const DeckDetailPage = () => {
         setIsModalOpen(true);
     };
 
-    const handleCloseEditModal = () => {
-        setIsModalOpen(false); setEditingCard(null);
-    };
+    const handleCloseEditModal = () => { setIsModalOpen(false); setEditingCard(null); };
 
     const handleUpdateCard = async (e) => {
         e.preventDefault();
@@ -73,16 +75,44 @@ const DeckDetailPage = () => {
             fetchCards();
         } catch (err) { setError('Erro ao atualizar o cartão.'); }
     };
+    
+    const renderCards = () => {
+        if (isLoading) {
+            return Array.from({ length: 4 }).map((_, index) => <CardSkeleton key={index} />);
+        }
+        if (cards.length === 0) {
+            return (
+                <div className="empty-state-cards">
+                    <h3>Este baralho está vazio.</h3>
+                    <p>Adicione seu primeiro cartão no formulário acima!</p>
+                </div>
+            );
+        }
+        return cards.map(card => (
+            <div key={card.id} className="flashcard">
+                <div className="card-buttons">
+                    <button onClick={() => handleOpenEditModal(card)} className="icon-button edit-button" aria-label="Editar Cartão"><FiEdit /></button>
+                    <button onClick={() => handleDeleteCard(card.id)} className="icon-button delete-button" aria-label="Excluir Cartão"><FiTrash2 /></button>
+                </div>
+                <div className="flashcard-inner">
+                    <div className="flashcard-front"><p>{card.frente}</p></div>
+                    <div className="flashcard-back"><p>{card.verso}</p></div>
+                </div>
+            </div>
+        ));
+    };
 
     return (
         <div className="deck-detail-container">
-            <Link to="/dashboard" className="back-link">&larr; Voltar para o Painel</Link>
-            <h1>Cartões do Baralho</h1>
-
-            {/* Formulário de Criação */}
-            <div className="create-card-form">
-                <h3>Adicionar Novo Cartão</h3>
-                <form onSubmit={handleCreateCard}>
+            <header className="deck-detail-header">
+                <Link to="/dashboard" className="back-link">
+                    <FiArrowLeft /> Voltar para o Painel
+                </Link>
+            </header>
+            
+            <div className="create-card-form-card">
+                <h3><FiPlusCircle /> Adicionar Novo Cartão</h3>
+                <form onSubmit={handleCreateCard} className="create-card-form">
                     <textarea placeholder="Frente do cartão (pergunta)" value={newCardFront} onChange={(e) => setNewCardFront(e.target.value)} required />
                     <textarea placeholder="Verso do cartão (resposta)" value={newCardBack} onChange={(e) => setNewCardBack(e.target.value)} required />
                     <button type="submit">Adicionar Cartão</button>
@@ -91,26 +121,13 @@ const DeckDetailPage = () => {
 
             {error && <p className="error-message">{error}</p>}
             
-            {/* Lista de Cartões */}
             <div className="cards-list">
-                {cards.map(card => (
-                    <div key={card.id} className="flashcard">
-                        <div className="card-buttons">
-                            <button onClick={() => handleOpenEditModal(card)} className="edit-button">✏️</button>
-                            <button onClick={() => handleDeleteCard(card.id)} className="delete-button">X</button>
-                        </div>
-                        <div className="flashcard-inner">
-                            <div className="flashcard-front"><p>{card.frente}</p></div>
-                            <div className="flashcard-back"><p>{card.verso}</p></div>
-                        </div>
-                    </div>
-                ))}
+                {renderCards()}
             </div>
 
-            {/* Modal de Edição de Cartão */}
             {isModalOpen && editingCard && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
+                <div className="modal-overlay" onClick={handleCloseEditModal}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <h2>Editar Cartão</h2>
                         <form onSubmit={handleUpdateCard}>
                             <label>Frente:</label>
@@ -118,8 +135,8 @@ const DeckDetailPage = () => {
                             <label>Verso:</label>
                             <textarea value={editingBack} onChange={(e) => setEditingBack(e.target.value)} required />
                             <div className="modal-actions">
-                                <button type="submit" className="button-primary">Salvar</button>
                                 <button type="button" onClick={handleCloseEditModal} className="button-secondary">Cancelar</button>
+                                <button type="submit" className="button-primary">Salvar Alterações</button>
                             </div>
                         </form>
                     </div>

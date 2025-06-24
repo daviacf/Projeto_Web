@@ -1,4 +1,4 @@
-// src/pages/DashboardPage.js (VERSÃO MASHUP FINAL)
+
 
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

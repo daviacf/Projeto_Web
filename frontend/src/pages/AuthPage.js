@@ -5,10 +5,10 @@ import { register, login } from '../api/authService';
 import './AuthPage.css';
 
 const AuthPage = () => {
-    // Estado para controlar a aba ativa
+    
     const [isLoginView, setIsLoginView] = useState(true);
 
-    // Estados para os formulários
+    
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');

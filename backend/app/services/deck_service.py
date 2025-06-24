@@ -35,8 +35,17 @@ def update_baralho(baralho_id, usuario_id, data):
 
     return deck_repository.update(baralho_id, titulo, descricao)
 
-def remove_deck(cartao_id):
-    success = deck_repository.delete_by_id(cartao_id)
-    if not success:
+# app/services/deck_service.py
+
+# ... (outras funções do arquivo) ...
+
+def remove_deck(baralho_id, usuario_id): 
+    baralho = deck_repository.find_by_id(baralho_id)
+    if not baralho:
         raise ValueError("Baralho não encontrado.")
+    if baralho['usuario_id'] != usuario_id:
+        raise PermissionError("Acesso negado. Você não pode excluir um baralho que não é seu.")
+    success = deck_repository.delete_by_id(baralho_id)
+    if not success:
+        raise ValueError("Falha ao excluir o baralho.")
     return True

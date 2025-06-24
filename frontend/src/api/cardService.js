@@ -1,4 +1,4 @@
-// src/api/cardService.js
+
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
@@ -16,7 +16,7 @@ export const createCard = (deckId, frente, verso) => {
   return axios.post(`${API_URL}/baralhos/${deckId}/cartoes`, { frente, verso }, getAuthHeader());
 };
 
-// --- FUNÇÕES NOVAS ---
+
 export const updateCard = (cardId, frente, verso) => {
   return axios.put(`${API_URL}/cartoes/${cardId}`, { frente, verso }, getAuthHeader());
 };
