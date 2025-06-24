@@ -20,3 +20,11 @@ export const createDeck = (titulo, descricao) => {
     // Agora usamos o getAuthHeader para enviar o token
     return axios.post(`${API_URL}/baralhos`, { titulo, descricao }, getAuthHeader());
   };
+
+  export const deleteDeck = (deckId) => {
+    return axios.delete(`${API_URL}/baralhos/${deckId}`, getAuthHeader());
+  };
+  export const updateDeck = (deckId, titulo, descricao) => {
+    return axios.put(`${API_URL}/baralhos/${deckId}`, { titulo, descricao }, getAuthHeader());
+  };
+  

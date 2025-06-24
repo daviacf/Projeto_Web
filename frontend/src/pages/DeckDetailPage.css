@@ -1,144 +1,123 @@
-/* src/pages/DeckDetailPage.css */
+/* VERSÃO FINAL E LIMPA para: src/pages/DeckDetailPage.css */
+
 .deck-detail-container {
-    padding: 20px;
-    font-family: sans-serif;
-  }
-  
-  .back-link {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .cards-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  
-  .flashcard {
-    perspective: 1000px;
-    height: 150px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    position: relative;
-  }
-  
-  .flashcard-front, .flashcard-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  .flashcard-back {
-    background-color: #f0f0f0;
-    transform: rotateY(180deg);
-  }
-  
-  /* Adicionaremos uma animação de virar ao passar o mouse */
-  .flashcard:hover .flashcard-front {
-    transform: rotateY(180deg);
-  }
-  .flashcard:hover .flashcard-back {
-    transform: rotateY(0deg);
-  }
-  .flashcard-front, .flashcard-back {
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-  }
-  /* src/pages/DeckDetailPage.css */
+  padding: 20px;
+  font-family: sans-serif;
+}
 
-/* ... (estilos existentes) ... */
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #007bff;
+  text-decoration: none;
+}
 
+/* --- Formulário de Criação de Cartão --- */
 .create-card-form {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-  }
-  
-  .create-card-form h3 {
-    margin-top: 0;
-  }
-  
-  .create-card-form form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .create-card-form textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    min-height: 60px;
-  }
-  
-  .create-card-form button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    align-self: flex-start;
-  }
-  /* src/pages/DeckDetailPage.css */
-/* ... (estilos existentes) ... */
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.create-card-form h3 { margin-top: 0; }
+.create-card-form form { display: flex; flex-direction: column; gap: 10px; }
+.create-card-form textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; min-height: 60px; }
+.create-card-form button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; align-self: flex-start; }
 
+/* --- Lista de Cartões --- */
+.cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* --- Animação de Virar o Flashcard --- */
 .flashcard {
-    position: relative; /* Necessário para posicionar o botão delete */
-  }
-  
-  .delete-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    line-height: 20px;
-    text-align: center;
-    z-index: 10; /* Garante que o botão fique na frente */
-  }
-  
-  /* Modificação para o efeito de virar funcionar corretamente com o aninhamento */
-  .flashcard-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-  }
-  
-  .flashcard:hover .flashcard-inner {
-      transform: rotateY(180deg);
-  }
-  
-  .flashcard-front, .flashcard-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      box-sizing: border-box;
-      border-radius: 8px; /* Adiciona bordas arredondadas */
-      border: 1px solid #ccc;
-  }
+  background-color: transparent;
+  width: 200px;
+  height: 150px;
+  perspective: 1000px;
+  border: none;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flashcard:hover .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.flashcard-back {
+  background-color: #f0f0f0;
+  color: black;
+  transform: rotateY(180deg);
+}
+
+/* --- Botões de Ação (reutiliza os estilos do DashboardPage) --- */
+.card-buttons {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 6px;
+  z-index: 10;
+}
+
+.delete-button, .edit-button {
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+
+.delete-button:hover, .edit-button:hover { transform: scale(1.1); }
+.delete-button { background-color: #e74c3c; color: white; font-size: 14px; }
+.edit-button { background-color: #95a5a6; color: white; font-size: 16px; }
+
+/* --- Estilos do Modal de Edição (reutiliza os estilos do DashboardPage) --- */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center; z-index: 1000;
+}
+.modal-content {
+  background: white; padding: 25px; border-radius: 8px;
+  width: 90%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.modal-content form { display: flex; flex-direction: column; gap: 15px; }
+.modal-content label { font-weight: bold; }
+.modal-content input, .modal-content textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+.modal-actions .button-primary { background-color: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+.modal-actions .button-secondary { background-color: #ccc; color: black; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
