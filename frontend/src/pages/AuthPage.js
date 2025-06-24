@@ -1,66 +1,73 @@
 // src/pages/AuthPage.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { register, login } from '../api/authService';
 import './AuthPage.css';
-import { useNavigate } from 'react-router-dom';
 
 const AuthPage = () => {
-  // Estados para o formulário de registro
-  const [regNome, setRegNome] = useState('');
-  const [regEmail, setRegEmail] = useState('');
-  const [regSenha, setRegSenha] = useState('');
+    // Estado para controlar a aba ativa
+    const [isLoginView, setIsLoginView] = useState(true);
 
-  // Estados para o formulário de login
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginSenha, setLoginSenha] = useState('');
-  
-  const [message, setMessage] = useState('');
+    // Estados para os formulários
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [message, setMessage] = useState('');
+    
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    const handleAuthAction = async (e) => {
+        e.preventDefault();
+        setMessage(''); // Limpa a mensagem anterior
+        
+        try {
+            if (isLoginView) {
+                // Lógica de Login
+                const response = await login(email, senha);
+                localStorage.setItem('jwt_token', response.data.token);
+                navigate('/dashboard');
+            } else {
+                // Lógica de Cadastro
+                const response = await register(nome, email, senha);
+                setMessage(response.data.message + " Agora você pode fazer o login.");
+                setIsLoginView(true); // Muda para a tela de login após o sucesso
+            }
+        } catch (error) {
+            setMessage(error.response?.data?.error || error.response?.data?.message || 'Ocorreu um erro.');
+        }
+    };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await register(regNome, regEmail, regSenha);
-      setMessage(response.data.message);
-    } catch (error) {
-      setMessage(error.response.data.error || 'Erro ao cadastrar.');
-    }
-  };
+    return (
+        <div className="auth-page-container">
+            <div className="auth-card">
+                <div className="auth-toggle">
+                    <button onClick={() => setIsLoginView(true)} className={isLoginView ? 'active' : ''}>
+                        Login
+                    </button>
+                    <button onClick={() => setIsLoginView(false)} className={!isLoginView ? 'active' : ''}>
+                        Cadastro
+                    </button>
+                </div>
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await login(loginEmail, loginSenha);
-      localStorage.setItem('jwt_token', response.data.token);
-      navigate('/dashboard'); // Redireciona para o painel
-    } catch (error) {
-      setMessage(error.response.data.message || 'Erro ao fazer login.');
-    }
-  };
+                <form onSubmit={handleAuthAction} className="auth-form">
+                    <h2>{isLoginView ? 'Bem-vindo de volta!' : 'Crie sua conta'}</h2>
+                    
+                    {!isLoginView && (
+                        <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome completo" required />
+                    )}
 
-  return (
-    <div className="auth-container">
-      <div className="form-container">
-        <h2>Cadastro</h2>
-        <form onSubmit={handleRegister}>
-          <input type="text" value={regNome} onChange={(e) => setRegNome(e.target.value)} placeholder="Nome" required />
-          <input type="email" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} placeholder="Email" required />
-          <input type="password" value={regSenha} onChange={(e) => setRegSenha(e.target.value)} placeholder="Senha" required />
-          <button type="submit">Cadastrar</button>
-        </form>
-      </div>
-      <div className="form-container">
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
-          <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="Email" required />
-          <input type="password" value={loginSenha} onChange={(e) => setLoginSenha(e.target.value)} placeholder="Senha" required />
-          <button type="submit">Entrar</button>
-        </form>
-      </div>
-      {message && <p className="message">{message}</p>}
-    </div>
-  );
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+                    <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="Senha" required />
+                    
+                    <button type="submit" className="submit-btn">
+                        {isLoginView ? 'Entrar' : 'Cadastrar'}
+                    </button>
+                    
+                    {message && <p className="auth-message">{message}</p>}
+                </form>
+            </div>
+        </div>
+    );
 };
 
 export default AuthPage;

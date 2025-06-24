@@ -1,98 +1,124 @@
-/* VERSÃO FINAL E LIMPA para: src/pages/DashboardPage.css */
+/* src/pages/DashboardPage.css (VERSÃO MASHUP) */
+
+/* --- Variáveis Globais e Estilos de Base --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #4A90E2; 
+  --primary-hover: #357ABD;
+  --danger-color: #E94B3C;
+  --light-gray: #f4f7f6;
+  --medium-gray: #e8e8e8;
+  --dark-gray: #a0a0a0;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --white: #fff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+body { background-color: var(--light-gray); }
 
 .dashboard-container {
-  padding: 20px;
-  font-family: sans-serif;
+  max-width: 1200px; margin: 0 auto; padding: 30px;
+  font-family: 'Inter', sans-serif; color: var(--text-primary);
 }
 
+/* --- Cabeçalho e Nossos Botões de Ação --- */
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
-/* --- Formulário de Criação de Baralho --- */
-.create-deck-form {
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 20px;
+  display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 30px;
 }
-.create-deck-form h3 { margin-top: 0; margin-bottom: 15px; }
-.create-deck-form form { display: flex; flex-direction: column; gap: 10px; }
-.create-deck-form input,
-.create-deck-form textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
-.create-deck-form button { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; align-self: flex-start; }
+.dashboard-header h1 { font-size: 2.5rem; font-weight: 700; }
+.header-actions { display: flex; gap: 1rem; }
+.create-deck-toggle-btn, .logout-button {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius); cursor: pointer;
+  font-size: 1rem; font-weight: 500; transition: var(--transition);
+}
+.create-deck-toggle-btn { background-color: var(--primary-color); color: var(--white); border-color: var(--primary-color); }
+.create-deck-toggle-btn:hover { background-color: var(--primary-hover); }
+.logout-button { background-color: var(--white); color: var(--text-secondary); }
+.logout-button:hover { background-color: #f8f8f8; border-color: var(--dark-gray); }
 
-/* --- Lista de Baralhos --- */
+/* --- Formulário de Criação (de Davi) --- */
+.create-deck-form-card {
+  background-color: var(--white); border-radius: var(--border-radius);
+  padding: 25px; margin-bottom: 40px; box-shadow: var(--shadow);
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.create-deck-form { display: flex; flex-direction: column; gap: 15px; }
+.create-deck-form input, .create-deck-form textarea {
+  padding: 12px; border: 1px solid var(--medium-gray);
+  border-radius: 6px; font-size: 1rem; font-family: 'Inter', sans-serif;
+}
+.create-deck-form textarea { min-height: 80px; resize: vertical; }
+.create-deck-form button {
+  padding: 12px 20px; background-color: var(--primary-color); color: var(--white);
+  border: none; border-radius: 6px; cursor: pointer; align-self: flex-start;
+  font-weight: 600; font-size: 1rem; transition: var(--transition);
+}
+.create-deck-form button:hover { background-color: var(--primary-hover); }
+
+/* --- Lista de Baralhos e Cards (de Davi) --- */
 .decks-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
 }
-
-.deck-card-link {
-  text-decoration: none;
-  color: inherit;
-}
-
+.deck-card-link { text-decoration: none; color: inherit; }
 .deck-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  height: 100%; 
-  position: relative; 
+  background-color: var(--white); border-radius: var(--border-radius);
+  box-shadow: var(--shadow); transition: var(--transition);
+  height: 100%; display: flex; flex-direction: column; justify-content: space-between;
 }
-.deck-card h2 { margin-top: 0; }
+.deck-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+.card-content { padding: 20px; }
+.card-content h2 { margin: 0 0 10px 0; font-size: 1.5rem; }
+.card-content p { margin: 0; color: var(--text-secondary); line-height: 1.5; }
+.card-footer {
+  padding: 15px 20px; border-top: 1px solid var(--light-gray);
+  display: flex; justify-content: space-between; align-items: center;
+  color: var(--text-secondary); font-size: 0.875rem;
+}
+.card-buttons { display: flex; gap: 8px; }
+.icon-button {
+  background: none; border: none; padding: 5px; cursor: pointer;
+  font-size: 1.25rem; color: var(--dark-gray); border-radius: 50%;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.icon-button:hover { background-color: var(--light-gray); }
+.edit-button:hover { color: var(--primary-color); }
+.delete-button:hover { color: var(--danger-color); }
 
-/* --- Botões de Ação (Editar/Excluir) --- */
-.card-buttons {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  display: flex;
-  flex-direction: row-reverse;
-  gap: 6px;
-  z-index: 10;
+/* --- Esqueleto de Carregamento (de Davi) --- */
+.deck-card-skeleton {
+  background-color: var(--white); border-radius: var(--border-radius);
+  box-shadow: var(--shadow); padding: 20px;
 }
+.skeleton-line { background-color: var(--medium-gray); border-radius: 4px; animation: pulse 1.5s infinite ease-in-out; }
+@keyframes pulse { 0% { background-color: var(--medium-gray); } 50% { background-color: #e0e0e0; } 100% { background-color: var(--medium-gray); } }
+.skeleton-line.title { width: 60%; height: 24px; margin-bottom: 15px; }
+.skeleton-line.desc { width: 90%; height: 16px; margin-bottom: 8px; }
+.skeleton-line.desc.short { width: 70%; }
 
-.delete-button, .edit-button {
-  border: none;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  transition: transform 0.2s;
-}
-
-.delete-button:hover, .edit-button:hover { transform: scale(1.1); }
-.delete-button { background-color: #e74c3c; color: white; font-size: 14px; }
-.edit-button { background-color: #95a5a6; color: white; font-size: 16px; }
-
-/* --- Estilos do Modal de Edição --- */
-.modal-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex; justify-content: center; align-items: center; z-index: 1000;
-}
-.modal-content {
-  background: white; padding: 25px; border-radius: 8px;
-  width: 90%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
+/* --- Demais estilos (de Davi) --- */
+.empty-state-container { background-color: var(--white); border: 2px dashed var(--medium-gray); border-radius: var(--border-radius); padding: 40px; text-align: center; grid-column: 1 / -1; }
+.error-message { color: var(--danger-color); background-color: rgba(233, 75, 60, 0.1); border: 1px solid var(--danger-color); padding: 15px; border-radius: var(--border-radius); margin-bottom: 20px; text-align: center; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.3s ease; }
+.modal-content { background: var(--white); padding: 30px; border-radius: var(--border-radius); width: 90%; max-width: 500px; box-shadow: var(--shadow-hover); animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { transform: translateY(-30px) scale(0.95); } to { transform: translateY(0) scale(1); } }
+.modal-content h2 { margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; }
 .modal-content form { display: flex; flex-direction: column; gap: 15px; }
-.modal-content label { font-weight: bold; }
-.modal-content input, .modal-content textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
-.modal-actions .button-primary { background-color: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
-.modal-actions .button-secondary { background-color: #ccc; color: black; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+.modal-content label { font-weight: 600; margin-bottom: -5px; }
+.modal-content input, .modal-content textarea { padding: 12px; border: 1px solid var(--medium-gray); border-radius: 6px; font-size: 1rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.modal-actions button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: var(--transition); }
+.button-primary { background-color: var(--primary-color); color: var(--white); }
+.button-primary:hover { background-color: var(--primary-hover); }
+.button-secondary { background-color: var(--medium-gray); color: var(--text-primary); }
+.button-secondary:hover { background-color: var(--dark-gray); }
