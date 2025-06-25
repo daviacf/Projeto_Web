@@ -1,4 +1,3 @@
-// src/api/deckService.js
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
@@ -9,7 +8,6 @@ const getAuthHeader = () => {
   return { headers: { Authorization: `Bearer ${token}` } };
 };
 
-// Função para buscar todos os baralhos
 export const getAllDecks = () => {
   
   return axios.get(`${API_URL}/baralhos`);

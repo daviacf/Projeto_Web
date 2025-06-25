@@ -1,4 +1,3 @@
-// src/pages/AuthPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register, login } from '../api/authService';
@@ -18,11 +17,10 @@ const AuthPage = () => {
 
     const handleAuthAction = async (e) => {
         e.preventDefault();
-        setMessage(''); // Limpa a mensagem anterior
+        setMessage(''); 
         
         try {
             if (isLoginView) {
-                // Lógica de Login
                 const response = await login(email, senha);
                 localStorage.setItem('jwt_token', response.data.token);
                 navigate('/dashboard');
@@ -30,7 +28,7 @@ const AuthPage = () => {
                 // Lógica de Cadastro
                 const response = await register(nome, email, senha);
                 setMessage(response.data.message + " Agora você pode fazer o login.");
-                setIsLoginView(true); // Muda para a tela de login após o sucesso
+                setIsLoginView(true); 
             }
         } catch (error) {
             setMessage(error.response?.data?.error || error.response?.data?.message || 'Ocorreu um erro.');

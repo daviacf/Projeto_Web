@@ -13,20 +13,24 @@ def get_cartoes_do_baralho(baralho_id):
 @token_required
 def create_cartao(baralho_id):
     data = request.get_json()
+    usuario_id = g.user_id
     try:
-        novo_cartao = card_service.add_new_card(data['frente'], data['verso'], baralho_id)
+        novo_cartao = card_service.add_new_card(data['frente'], data['verso'], baralho_id, usuario_id)
         return jsonify(novo_cartao), 201
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
-    
+    except PermissionError as e:
+        return jsonify({'error': str(e)}), 403
+
 @cartao_bp.route('/cartoes/<string:cartao_id>', methods=['PUT'])
 @token_required
 def update_cartao(cartao_id):
     data = request.get_json()
+    usuario_id = g.user_id
     try:
-        updated_cartao = card_service.update_card(cartao_id, data)
+        updated_cartao = card_service.update_card(cartao_id, data, usuario_id)
         return jsonify(updated_cartao)
-    except ValueError as e:
+    except (ValueError, PermissionError) as e:
         return jsonify({'error': str(e)}), 400
     except Exception as e:
         return jsonify({'error': 'Erro interno do servidor'}), 500
@@ -34,8 +38,9 @@ def update_cartao(cartao_id):
 @cartao_bp.route('/cartoes/<string:cartao_id>', methods=['DELETE'])
 @token_required
 def delete_cartao(cartao_id):
+    usuario_id = g.user_id
     try:
-        card_service.remove_card(cartao_id)
+        card_service.remove_card(cartao_id, usuario_id)
         return jsonify({'message': 'Cartão deletado com sucesso'}), 200
-    except ValueError as e:
+    except (ValueError, PermissionError) as e:
         return jsonify({'error': str(e)}), 404

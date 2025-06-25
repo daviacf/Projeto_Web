@@ -1,12 +1,9 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAllDecks, createDeck, deleteDeck, updateDeck } from '../api/deckService';
 import { FiEdit, FiTrash2, FiLogOut, FiPlusCircle } from 'react-icons/fi';
 import './DashboardPage.css';
 
-// Componente para o esqueleto de carregamento
 const DeckCardSkeleton = () => (
     <div className="deck-card-skeleton">
         <div className="skeleton-line title"></div>

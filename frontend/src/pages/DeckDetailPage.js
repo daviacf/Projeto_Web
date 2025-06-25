@@ -6,7 +6,7 @@ import { getCardsByDeckId, createCard, updateCard, deleteCard } from '../api/car
 import { FiEdit, FiTrash2, FiPlusCircle, FiArrowLeft } from 'react-icons/fi';
 import './DeckDetailPage.css';
 
-// Componente para o esqueleto de carregamento
+
 const CardSkeleton = () => <div className="card-skeleton" />;
 
 const DeckDetailPage = () => {
@@ -15,11 +15,9 @@ const DeckDetailPage = () => {
     const [error, setError] = useState('');
     const { deckId } = useParams();
 
-    // Estados do formulário de criação
     const [newCardFront, setNewCardFront] = useState('');
     const [newCardBack, setNewCardBack] = useState('');
 
-    // Estados do modal de edição
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCard, setEditingCard] = useState(null);
     const [editingFront, setEditingFront] = useState('');
