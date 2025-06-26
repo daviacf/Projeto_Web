@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "2494a4d1-e6e2-4f61-a5a2-35b7c25cea60",
+		"name": "flashcards",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38361320"
+	},
+	"item": [
+		{
+			"name": "usuarios",
+			"item": [
+				{
+					"name": "cadastro",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set a variable\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const id = jsonData.user_id;\r",
+									"    pm.collectionVariables.set(\"user_id\", id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Usuário de Teste\",\r\n    \"email\": \"teste@email.com\",\r\n    \"senha\": \"senha123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set a variable\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const token = jsonData.token;\r",
+									"    pm.collectionVariables.set(\"jwt_token\", token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"teste@email.com\",\r\n    \"senha\": \"senha123\"             \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "baralhos",
+			"item": [
+				{
+					"name": "criar baralho",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set a variable\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const id = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"baralho_id\", id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"titulo\": \"Primeiro Baralho\",\r\n      \"descricao\": \"Criado via Postman\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/baralhos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"baralhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar baralhos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/baralhos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"baralhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar baralho",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"Meu Baralho com Nome Atualizado\",\r\n    \"descricao\": \"Uma nova descrição para o baralho.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/baralhos/{{baralho_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"baralhos",
+								"{{baralho_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir baralho",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/baralhos/{{baralho_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"baralhos",
+								"{{baralho_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cartas",
+			"item": [
+				{
+					"name": "Criar cartão",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set a variable\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const id = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"card_id\", id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"frente\": \"O que é uma API REST?\",\r\n      \"verso\": \"Um estilo arquitetural para projetar aplicações em rede.\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/baralhos/{{baralho_id}}/cartoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"baralhos",
+								"{{baralho_id}}",
+								"cartoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar cartões",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/baralhos/{{baralho_id}}/cartoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"baralhos",
+								"{{baralho_id}}",
+								"cartoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Cartão",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"frente\": \"O que é uma API RESTful?\",\r\n    \"verso\": \"É um estilo arquitetural que segue os princípios do REST.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/cartoes/{{card_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cartoes",
+								"{{card_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir cartões",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/cartoes/{{card_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cartoes",
+								"{{card_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "baralho_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "card_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
